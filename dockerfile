@@ -18,6 +18,8 @@ RUN chmod +x ${BUILD_PATH}/gradlew \
 RUN ./gradlew dependencies
 
 COPY --chown=1000:1000 . .
+# can add args later
+RUN ./gradlew assemble
 
 FROM eclipse-temurin:25-jdk
 ARG APP_BUILD_PATH="/appbuild"
@@ -31,4 +33,4 @@ COPY --from=build ${APP_BUILD_PATH}/${APP_BUILD_FOLDER}/*.jar ${APP_PATH}/app.ja
 
 USER 1000:1000
 # can add args later
-CMD ["java", "-jar", "${APP_PATH}/app.jar"]
+ENTRYPOINT ["sh", "-c", "java -jar ${APP_PATH}/app.jar"]
